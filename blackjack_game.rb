@@ -6,6 +6,8 @@ require "pry"
 
 
 continue = true
+
+say "Welcome to Blackjack ----command line version."
 say "What is your name?"
 human_player = Player.new(gets.chomp)
 dealer = Player.new("Dealer")
