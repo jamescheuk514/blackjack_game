@@ -1,10 +1,6 @@
-def initialize_card_deck
+def initialize_card_deck(num)
   $cards_deck = []
-  until $number_of_deck > 0
-    say "Please give a positive number"
-    $number_of_deck = gets.to_i
-  end
-  $number_of_deck.times do
+  num.times do
     arr = ["Clubs", "Diamonds", "Hearts", "Spades"]
 
     arr.each do |x|
@@ -99,7 +95,7 @@ def say(msg)
 end
 
 def display_cards(player)
-  say "Your cards: #{player.cards}"
+  say "#{player.name} cards: #{player.cards}"
 end
 
 def announce(winner)

@@ -14,10 +14,9 @@ class Player
     tmp = []
     @cards.each { |x| tmp << x.split(' ') }
     tmp.flatten!
+
     arr = ["Clubs", "Diamonds", "Hearts", "Spades"]
     tmp.delete_if { |x| arr.include?(x) }
-
-
 
     @cards_value = tmp.map do |x|
       if x == "Jack" or x == "Queen" or x == "King"
@@ -32,7 +31,7 @@ class Player
   end
 
   def check_if_include_ace
-    @include_ace = true if cards.include?("Ace")
+    @include_ace = true if cards_value.include?(1)
   end
 
 
@@ -54,8 +53,8 @@ class Player
 
 
   def value_for_compare
-    if (@total_value+10) < 21 && @include_ace
-      @total_value+10
+    if (@total_value + 10) < 21 && @include_ace
+      @total_value + 10
     else
       @total_value
     end

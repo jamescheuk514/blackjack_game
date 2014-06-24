@@ -13,14 +13,21 @@ human_player = Player.new(gets.chomp)
 dealer = Player.new("Dealer")
 
 say "Hi #{human_player.name}. How many deck you need for the game?"
-$number_of_deck = gets.to_i
+num = gets.to_i
+until num > 0
+  say "Please give a positive number"
+  num = gets.to_i
+end
+
 while continue
   human_player.reset
   dealer.reset
 
   winner = nil
-  initialize_card_deck
 
+
+  initialize_card_deck(num)
+  
   assign_card_to(human_player, 2)
   display_cards(human_player)
   assign_card_to(dealer, 2)
@@ -38,6 +45,9 @@ while continue
   end
 
   announce winner
+  display_cards(human_player)
+  display_cards(dealer)
+
   say "Do you want to play again?(y/n)"
   ans = gets.chomp
   if ans == 'n'
