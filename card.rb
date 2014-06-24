@@ -1,27 +1,41 @@
 def initialize_card_deck
-  $card_deck = []
+  $cards_deck = []
   until $number_of_deck > 0
     say "Please give a positive number"
     $number_of_deck = gets.to_i
   end
   $number_of_deck.times do
-    4.times do
+    arr = ["Clubs", "Diamonds", "Hearts", "Spades"]
+
+    arr.each do |x|
       1.upto(13) do |i|
-        $card_deck << i
+        if i == 1
+          $cards_deck << "#{x} Ace"
+
+        elsif i == 11
+          $cards_deck << "#{x} Jack"
+        elsif i == 12
+          $cards_deck << "#{x} Queen"
+        elsif i == 13
+          $cards_deck << "#{x} King"
+        else
+          $cards_deck << "#{x} #{i}"
+        end
       end
     end
+
   end
 
-  $card_deck.shuffle!
+  $cards_deck.shuffle!
 
 end
 
 #assign_card_to human_player or dealer
 def assign_card_to(player, amount)
   amount.times do
-    player.cards << $card_deck.pop
-    player.update
+    player.cards << $cards_deck.pop
   end
+  player.update
 end
 
 
@@ -33,24 +47,22 @@ def ask_hit_or_stay
   #end
 end
 
-def hit_or_stay(player)
+def hit_or_stay(player1, player2)
 
-  if player == $human_player
+  if player1.name != "Dealer"
     while ask_hit_or_stay.downcase == 'hit'
+      assign_card_to(player1, 1)
+      display_cards(player1)
+      winner = check_winner(player1, player2)
+      return winner if winner
 
-      assign_card_to(player, 1)
-      player.update
-      display_cards(player)
-      $winner = check_winner(player)
-      break if $winner
     end
   else
-    until player.total_value >= 17 && player.think == 'stay'
+    until player1.total_value >= 17 && player1.think == 'stay'
       say "Dealer chose to hit"
-      assign_card_to(player, 1)
-      player.update
-      $winner = check_winner(player)
-      break if $winner
+      assign_card_to(player1, 1)
+      winner = check_winner(player1, player2)
+      return winner if winner
     end
     say 'Dealer chose to stay'
   end
@@ -58,19 +70,21 @@ end
 
 
 
-def check_winner(player)
-  if player.total_value == 11 && player.include_ace
-    player
-  elsif player.total_value == 21
-    player
-  elsif player.total_value > 21
-    $human_player if player == $dealer
-    $dealer if player == $human_player
+def check_winner(player1, player2)
+  if player1.total_value == 11 && player1.include_ace
+    return player1
+  elsif player1.total_value == 21
+    return player1
+  elsif player1.total_value > 21
+    return player2
   else
-    nil
+    return nil
   end
 end
 
+def winner?(player)
+  winner == player
+end
 
 def compare_two(player1, player2)
   if  player1.value_for_compare > player2.value_for_compare
@@ -78,7 +92,6 @@ def compare_two(player1, player2)
   else
     return player2
   end
-  binding.pry
 end
 
 def say(msg)
@@ -89,8 +102,6 @@ def display_cards(player)
   say "Your cards: #{player.cards}"
 end
 
-def announce_winner
-  unless $winner.nil?
-    say "The winner is #{$winner.name}"
-  end
+def announce(winner)
+  say "The winner is #{winner.name}"
 end
