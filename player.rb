@@ -28,9 +28,8 @@ class Dealer < GamePlayer
     if total_value < 17
       'hit'
     else
-      diff = 21 - total_value
-      tmp = Random.rand(0.0..diff)
-      if tmp > 3.5
+      tmp = Random.rand
+      if tmp > 0.75
         'hitc'
       else
         'stay'
